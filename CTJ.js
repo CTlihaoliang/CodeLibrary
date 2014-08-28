@@ -3,7 +3,7 @@
 *name: CTJ
 *data:2014-08-26
 autor:lihaoliang
-version:1.0
+version:1.0.1
 */
 
 (function(window,undefined){
@@ -31,7 +31,17 @@ CTJ.extend = function(type,object) {
 }
 
 CTJ.extend("string",{
-	//中文算两个字符
+	/**
+     * 计算字符串的长度 (中文算两个)
+     * 
+     * 脚本举例
+     * [code]
+     *   // CTJ.string.getLength(str)
+     * [/code]
+
+     * @param  {String}  待编码串
+     * @return {Number}  编码后的串
+     */
 	getLength: function(_content) {
         var _reg = /[^\x00-\xfff]/g;
         return (''+(_content||'')).replace(_reg,'**').length;
@@ -39,7 +49,19 @@ CTJ.extend("string",{
 })
 
 CTJ.extend("array",{
-
+    /**
+     * 数组中产生随机数<br/>
+     * 
+     * 脚本举例
+     * [code]
+     *   // 传入数组和要产生的随机个数
+     *   CTJ.array.randomArray(arr,num)
+     * [/code]
+     * 
+     * @param  {Array}               数组源
+     * @param  {Number}              个数，不传就默认1个
+     * @return {Array}               数组结果
+     */
 	randomArray: function(_arr,_num) {
        var arr = _arr;
        var len = arr.length;
@@ -61,7 +83,19 @@ CTJ.extend("array",{
        }
        
 	},
-
+    /**
+     * 判断是否在数组中<br/>
+     * 
+     * 脚本举例
+     * [code]
+     *   // 传入数组和要检测的数
+     *   CTJ.array.inArray(arr,num)
+     * [/code]
+     * 
+     * @param  {Array}               数组
+     * @param  {Number}              要检测的元素
+     * @return {Number}              存在就返回元素所在的索引，否则返回-1
+     */
 	inArray: function (_arr,_elem) {
 		var arr = _arr;
 		var elem = _elem;
@@ -84,9 +118,21 @@ CTJ.extend("array",{
 	},
 
     forEach: function () {
-         //暂时用不到
+         //。。。
     },
-
+     /**
+     * 数组遍历操作<br/>
+     * 
+     * 脚本举例
+     * [code]
+     *   // 传入数组和方法
+     *   CTJ.array.map(arr,fn)
+     * [/code]
+     * 
+     * @param  {Array}               数组
+     * @param  {Function}            要操作的方法
+     * @return {Array}               操作结果
+     */
     map: function (_arr,_fn) {
        var arr = _arr ;
        var fn = _fn;
@@ -103,7 +149,19 @@ CTJ.extend("array",{
 
        return result;
     },
-
+     /**
+     * 数组过滤操作<br/>
+     * 
+     * 脚本举例
+     * [code]
+     *   // 传入数组和方法
+     *   CTJ.array.filter(arr,fn)
+     * [/code]
+     * 
+     * @param  {Array}               数组
+     * @param  {Function}            要过滤的方法
+     * @return {Array}               过滤后的结果
+     */
 	filter: function (_arr,_fn) {
 	   var arr = _arr ;
 	   var fn = _fn;
@@ -120,7 +178,18 @@ CTJ.extend("array",{
 
        return resut;
 	},
-
+    /**
+     * 去除数组重复元素<br/>
+     * 
+     * 脚本举例
+     * [code]
+     *   // 传入数组
+     *   CTJ.array.uniqueArray(arr,fn)
+     * [/code]
+     * 
+     * @param  {Array}               数组
+     * @return {Array}               操作结果
+     */
 	uniqueArray: function (_arr) {
         var arr = _arr && _arr.sort();
         var result = [];
@@ -144,7 +213,7 @@ CTJ.extend("date",{
      * 脚本举例
      * [code]
      *   // 根据格式输出时间，比如:2012-01-11,连接符可自定义
-     *   dateFormat(new Date(),'yyyy-MM-dd');
+     *   CTJ.date.dateFormat(new Date(),'yyyy-MM-dd');
      * [/code]
      * 
      * @param  {Number|String|Date}  时间
@@ -180,25 +249,11 @@ CTJ.extend("date",{
     /**
      * 转日期对象<br/>
      * 字符串日期格式同ECMA规范定义：YYYY-MM-DDTHH:mm:ss.sssZ
-     * [ntb]
-     *   YYYY | the decimal digits of the year 0000 to 9999 in the Gregorian calendar
-     *   -    | appears literally twice  in the string
-     *   MM   | the month of t he year from 01 (January) to 12 (December)
-     *   DD   | the day of the month from 01 to 31
-     *   T    | appears literally in the string, to indicate the beginning of the time element
-     *   HH   | the number of complete hours that have passed since midnight as two decimal digits from 00 to 24
-     *   :    | appears literally twice in the string
-     *   mm   | the number of complete minutes since the start of the hour as two decimal digits from 00 to 59
-     *   ss   | the number of complete seconds since the start of the minute as two deci mal digits  from 00 to 59
-     *   .    | appears literally in the string
-     *   sss  | the number of complete milliseconds since the start of the second as three decimal digits
-     *   Z    | the time zone offset specified as ― Z(for UTC) or either + or - followed by  a time expression HH:mm
-     * [/ntb]
      * 
      * 脚本举例
      * [code]
      *   // 输入字符串，数字或日期，生成日期对象
-     *   toDate(new Date());
+     *   CTJ.date.toDate(new Date());
      * [/code]
      * @param  {Number|String|Date}  时间
      * @return {Date}                日期
@@ -304,9 +359,9 @@ CTJ.extend("fx",{
 	isWindow: function( _data ) {
 		return _data != null && _data == _data.window;
 	}
-});
+  });
 
-    /**
+   /**
      * 编码字符串
      * 
      * 脚本举例
@@ -318,14 +373,14 @@ CTJ.extend("fx",{
      * @param  {String}  待编码的字串
      * @return {String}  编码后的字串
      */
-    CTJ.encode = function(_map,_content){
+ CTJ.encode = function(_map,_content){
         if (!_map||!_content||!_content.replace) 
             return _content||'';
         return _content.replace(_map.r,function($1){
                    var _result = _map[!_map.i?$1.toLowerCase():$1];
                    return _result!=null?_result:$1;
                });
-    };
+  };
     /**
      * 编码html代码，'<' -> '&lt;'
      * 
@@ -338,13 +393,13 @@ CTJ.extend("fx",{
      * @param  {String}  待编码串
      * @return {String}  编码后的串
      */
-    CTJ.escape = (function(){
+  CTJ.escape = (function(){
         var _map = {r:/\<|\>|\&|\r|\n|\s|\'|\"/g,
                    '<':'&lt;','>':'&gt;','&':'&amp;',' ':'&nbsp;','"':'&quot;',"'":'&#39;','\n':'<br/>','\r':''};
         return function(_content){
             return CTJ.encode(_map,_content);
         };
-    })();
+  })();
     /**
      * 反编码html代码，'&lt;' -> '<'
      * 
@@ -357,15 +412,15 @@ CTJ.extend("fx",{
      * @param  {String}  待编码串
      * @return {String}  编码后的串
      */
-    CTJ.unescape = (function(){
+  CTJ.unescape = (function(){
         var _map = {r:/\&(?:lt|gt|amp|nbsp|#39|quot)\;|\<br\/\>/gi,
                    '&lt;':'<','&gt;':'>','&amp;':'&','&nbsp;':' ','&#39;':"'",'&quot;':'"','<br/>':'\n'};
         return function(_content){
             return CTJ.encode(_map,_content);
         };
-    })();
+   })();
 
- /**
+   /**
      * 浮点数值保留指定位数小数点<br/>
      * 
      * 脚本举例
@@ -405,7 +460,7 @@ CTJ.extend("fx",{
 
 
  /**
-     * 缓存部分<br/>
+     * 缓存模块<br/>
      * 脚本举例
      * [code]
      *  new CTJ.Cache() 一个实例 ;
