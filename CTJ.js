@@ -3,7 +3,7 @@
 *name: CTJ
 *data:2014-08-26
 autor:lihaoliang
-version:1.0
+version:1.1
 */
 
 (function(window,undefined){
