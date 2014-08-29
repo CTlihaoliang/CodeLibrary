@@ -22,7 +22,7 @@ CTJ.extend = function(type,object) {
    	  CTJ[type] = {};
    }
 
-   if (object == null || typeof object == null || core_toString.call(object).toLowerCase() !=='[object '+_type+']') return;
+   if (object == null || typeof object == null || core_toString.call(object).toLowerCase() !=='[object object]') return;
 
    for (var obj in object) {
    	CTJ[type][obj] = object[obj];
