@@ -14,7 +14,9 @@ var core_slile = [].slice,
       core_map = [].map,
     class2type = {},
  core_toString = class2type.toString,
+ hasOwnProperty = Object.prototype.hasOwnProperty,
            CTJ = {};
+
 
 CTJ.extend = function(type,object) {
 	
@@ -45,8 +47,36 @@ CTJ.extend("string",{
 	getLength: function(_content) {
         var _reg = /[^\x00-\xfff]/g;
         return (''+(_content||'')).replace(_reg,'**').length;
+	},
+
+	trim: function(str){
+		return String(str).replace(/^\s+|\s+$/g, '');
+	},
+    /**
+     * 字符串转换驼峰
+     * 
+     * 脚本举例
+     * [code]
+     *   // CTJ.string.camelCase(str)
+     * "jsdkLKJLKF-2K9889" -> "jsdkLKJLKFSK9889"
+     * [/code]
+
+     * @param  {String}  待转换的字符串
+     * @return {Number}  转换后的字符串
+     */
+    camelCase: function(str) {  // \D 和 [^0-9]等价
+		return String(str).replace(/-\D/g, function(match){
+			return match.charAt(1).toUpperCase();
+		});
 	}
 })
+
+CTJ.extend("number",{
+	random: function (min,max) {
+       return Math.floor(Math.random() * (max - min + 1) + min);
+	}
+})
+
 
 CTJ.extend("array",{
     /**
@@ -203,6 +233,28 @@ CTJ.extend("array",{
         }
 
        return result;
+	},
+    /**
+     * 去除数组某元素<br/>
+     * 
+     * 脚本举例
+     * [code]
+     *   // 传入数组和待删元素
+     *   CTJ.array.erase(arr,elem)
+     * [/code]
+     * 
+     * @param  {Array}               数组
+     * @param  {object}              数组元素
+     * @return {Array}               操作结果
+     */
+	erase: function(_arr,_item){
+        var arr = _arr;
+        var item = _item;
+        var len = arr.length;
+		for (var i = len; i--;){
+			if (arr[i] === item) arr.splice(i, 1);
+		}
+		return arr;
 	}
 });
 
@@ -269,23 +321,88 @@ CTJ.extend("date",{
 
 });
 
+CTJ.extend("object",{
+	keys: function(object){
+		var keys = [];
+		for (var key in object){
+			if (hasOwnProperty.call(object, key)) keys.push(key);
+		}
+		return keys;
+	},
+
+	values: function(object){
+		var values = [];
+		for (var key in object){
+			if (hasOwnProperty.call(object, key)) values.push(object[key]);
+		}
+		return values;
+	},
+
+	keyOf: function(object, value){
+		for (var key in object){
+			if (hasOwnProperty.call(object, key) && object[key] === value) return key;
+		}
+		return null;
+	},
+
+	contains: function(object, value){
+		return Object.keyOf(object, value) != null;
+	}
+})
+
 
 CTJ.extend("brower",{
 
-    isIE: function () {
-       return  navigator.userAgent.indexOf("MSIE") > 0 ;
-    },
+    /**
+     * 获取浏览器的信息<br/>
+     * 
+     * 脚本举例
+     * [code]
+     *   CTJ.parse(navigator.userAgent, navigator.platform);
+     * [/code]
+     * @param  {String}  navigator.userAgent 非必须
+     * @param  {String}  navigator.platform  非必须
+     * @return {object}  浏览器对象信息 名称、版本号、平台
+     */
+    parse: function(ua, platform){
+    	var ua = ua || navigator.userAgent;
+    	var platform = platform || navigator.platform;
+	    ua = ua.toLowerCase();
+	    platform = (platform ? platform.toLowerCase() : '');
 
-    isIE6: function () {
-       return navigator.userAgent.indexOf("MSIE 6.0") > 0 ;
-    },
+	    var UA = ua.match(/(opera|ie|firefox|chrome|trident|crios|version)[\s\/:]([\w\d\.]+)?.*?(safari|(?:rv[\s\/:]|version[\s\/:])([\w\d\.]+)|$)/) || [null, 'unknown', 0];
 
-    isIE7: function () {
-       return navigator.userAgent.indexOf("MSIE 7.0") > 0 ;
+	    if (UA[1] == 'trident'){
+	    	UA[1] = 'ie';
+		    if (UA[4]) UA[2] = UA[4];
+	    } else if (UA[1] == 'crios') {
+		    UA[1] = 'chrome';
+        }
+
+	    var platform = ua.match(/ip(?:ad|od|hone)/) ? 'ios' : (ua.match(/(?:webos|android)/) || platform.match(/mac|win|linux/) || ['other'])[0];
+	    if (platform == 'win') platform = 'windows';
+
+	    return {
+	    	name: (UA[1] == 'version') ? UA[3] : UA[1],
+	    	version: parseFloat((UA[1] == 'opera' && UA[4]) ? UA[4] : UA[2]),
+		    platform: platform
+	    }
     }
+})
 
-});
+CTJ.extend("event",{
+	stopPropagation: function(event){
+		var event = event || window.event;
+		if (event.stopPropagation) event.stopPropagation();
+		else event.cancelBubble = true;
+	},
 
+	preventDefault: function(){
+		var event = event || window.event;
+		if (event.preventDefault) this.event.preventDefault();
+		else event.returnValue = false;
+	}
+})
 
 CTJ.extend("cookie",{
 
